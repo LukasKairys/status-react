@@ -143,6 +143,14 @@
                         :options      options
                         :empty-value? phone-empty?}]))
 
+(defn network-settings []
+  [react/touchable-highlight
+   {:on-press #(dispatch [:navigate-to :network-settings])}
+   [react/view styles/network-settings
+    [react/text {:style styles/network-settings-text}
+     (label :t/network-settings)]
+    [vi/icon :icons/forward {:color :gray}]]])
+
 (defn profile-info [{:keys [whisper-identity status phone] :as contact}]
   [react/view
    [profile-info-address-item contact]
@@ -160,7 +168,9 @@
    [profile-info-phone-item
     phone
     [{:value #(dispatch [:my-profile/change-phone-number])
-      :text  (label :t/edit)}]]])
+      :text  (label :t/edit)}]]
+   [info-item-separator]
+   [network-settings]])
 
 (defn profile-status [status & [edit?]]
   [react/view styles/profile-status-container
@@ -174,14 +184,6 @@
        [react/view
         [react/text {:style styles/profile-status-text}
          (colorize-status-hashtags status)]]]])])
-
-(defn network-settings []
-  [react/touchable-highlight
-   {:on-press #(dispatch [:navigate-to :network-settings])}
-   [react/view styles/network-settings
-    [react/text {:style styles/network-settings-text}
-     (label :t/network-settings)]
-    [react/icon :forward_gray]]])
 
 (defview my-profile []
   (letsubs [{:keys [status] :as current-account} [:get-current-account]]
@@ -200,7 +202,6 @@
       [form-spacer]
       [react/view styles/profile-info-container
        [my-profile-info current-account]
-       [network-settings]
        [bottom-shadow]]]]))
 
 (defview profile []

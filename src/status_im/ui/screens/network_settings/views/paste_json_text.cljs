@@ -4,7 +4,7 @@
     [status-im.components.status-bar :refer [status-bar]]
     [status-im.components.toolbar-new.view :refer [toolbar]]
     [status-im.ui.screens.network-settings.views :as network-settings]
-    [status-im.components.react :refer [view text text-input icon]]
+    [status-im.components.react :refer [view text text-input]]
     [status-im.components.sticky-button :as sticky-button]
     [status-im.ui.screens.network-settings.styles :as st]
     [status-im.i18n :as i18n]
