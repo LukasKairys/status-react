@@ -57,9 +57,13 @@
 (defn get-network-by-address [db address]
   (let [accounts (get db :accounts/accounts)
         {:keys [network networks]} (get accounts address)
-        config   (get-in networks [network :config])]
+        config   (get-in networks [network :config])
+        default-networks (get db :networks/networks)
+        default-network  (get db :network)
+        network-config   (or config
+                             (get-in default-networks [default-network :config]))]
     {:network network
-     :config  config}))
+     :config  network-config}))
 
 (defn wrap-with-initialize-geth-fx [db address password]
   (let [{:keys [network config]} (get-network-by-address db address)]
@@ -86,16 +90,16 @@
           db' (-> db
                   (dissoc :db)
                   (assoc :accounts/account-creation? account-creation?)
-                  (assoc-in [:accounts/login :processing] true))]
-      ((cond (not status-node-started?)
-             wrap-with-initialize-geth-fx
+                  (assoc-in [:accounts/login :processing] true))
+          wrap-fn (cond (not status-node-started?)
+                        wrap-with-initialize-geth-fx
 
-             (= account-network network)
-             wrap-with-login-account-fx
+                        (= account-network network)
+                        wrap-with-login-account-fx
 
-             :else
-             wrap-with-stop-node-fx)
-        db' address password))))
+                        :else
+                        wrap-with-stop-node-fx)]
+      (wrap-fn db' address password))))
 
 (register-handler-fx
   :login-handler
