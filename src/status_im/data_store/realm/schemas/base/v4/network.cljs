@@ -1,4 +1,4 @@
-(ns status-im.data-store.realm.schemas.base.v3.network
+(ns status-im.data-store.realm.schemas.base.v4.network
   (:require [taoensso.timbre :as log]))
 
 (def schema {:name       :network
@@ -12,4 +12,4 @@
                                     :optional true}}})
 
 (defn migration [old-realm new-realm]
-  (log/debug "migrating group schema v3"))
+  (log/debug "migrating group schema v4"))

@@ -1,4 +1,4 @@
-(ns status-im.data-store.realm.schemas.base.v3.account
+(ns status-im.data-store.realm.schemas.base.v4.account
   (:require [taoensso.timbre :as log]))
 
 (def schema {:name       :account
@@ -23,4 +23,4 @@
                                                 :objectType :network}}})
 
 (defn migration [_ _]
-  (log/debug "migrating account schema"))
+  (log/debug "migrating account schema v4"))
